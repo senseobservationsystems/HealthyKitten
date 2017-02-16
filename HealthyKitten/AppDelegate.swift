@@ -8,15 +8,17 @@
 
 import UIKit
 import UserNotifications
+import HealthKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    /// Stores the sequence of "background acitivy events" our app received. Possible event types are:
-    /// - Push notifications (regardless whether received while app is in the background or foreground)
-    /// - Background fetch wakeups
+
+    /// Stores the sequence of "Health kit sample events" our app received. Possible event types are:
+    /// - StepCount
+    /// - Sleep
     let eventsStore = UserDefaultsDataStore<SerializableArray<HKSample>>(key: "HealthKitSampleEvents", defaultValue: [])
     
     /// Stores the number of background activity events our app received while it was in the background.
@@ -40,6 +42,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //        secondViewController.viewModel = FillMemoryViewModel()
 
         // TODO: set up HealthKit background delivery
+        
         
 
         // Ask for permission to display alerts and badge numbers on the app icon.
@@ -65,5 +68,46 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
 }
+
+class HealthKitManager {
+    
+    let healthStore = HKHealthStore()
+    
+    //TODO:// parameterise sampleType?
+    func startObserving() {
+        let sampleType =
+            HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.stepCount)!
+        
+        let query = HKObserverQuery(sampleType: sampleType, predicate: nil) {
+            query, completionHandler, error in
+            
+            guard error == nil else {
+                // Perform Proper Error Handling Here...
+                print("*** An error occured while setting up the stepCount observer. \(error!.localizedDescription) ***")
+                abort()
+            }
+            
+            // Take whatever steps are necessary to update your app's data and UI
+            // This may involve executing other queries
+            self.updateDailyStepCount(query)
+            
+            // If you have subscribed for background updates you must call the completion handler here.
+            completionHandler()
+        }
+        
+        healthStore.enableBackgroundDelivery(for: sampleType,
+                                             frequency: .immediate) {
+            (success, error) in
+            print("Background Delivery completed")
+        }
+        healthStore.execute(query)
+    }
+    
+    func updateDailyStepCount(_ query: HKObserverQuery) {
+        print("\(query)")
+    }
+}
+
+
 
 
