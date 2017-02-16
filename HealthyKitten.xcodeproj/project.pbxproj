@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		274C1B481E56085800F73A9F /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 274C1B471E56085800F73A9F /* HealthKitManager.swift */; };
 		2782B8D51E548C2B00F2C527 /* EventsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2782B8D41E548C2B00F2C527 /* EventsViewModel.swift */; };
 		2782B8D81E54A67400F2C527 /* SleepCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2782B8D71E54A67400F2C527 /* SleepCell.swift */; };
 		2782B8DA1E54A69D00F2C527 /* StepCountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2782B8D91E54A69D00F2C527 /* StepCountCell.swift */; };
@@ -33,6 +34,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		274C1B471E56085800F73A9F /* HealthKitManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthKitManager.swift; sourceTree = "<group>"; };
 		2782B8D41E548C2B00F2C527 /* EventsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventsViewModel.swift; sourceTree = "<group>"; };
 		2782B8D71E54A67400F2C527 /* SleepCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SleepCell.swift; sourceTree = "<group>"; };
 		2782B8D91E54A69D00F2C527 /* StepCountCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StepCountCell.swift; sourceTree = "<group>"; };
@@ -115,6 +117,7 @@
 				27A5DE7B1E4E148000B90D97 /* PropertyListSerializable.swift */,
 				2782B8D71E54A67400F2C527 /* SleepCell.swift */,
 				2782B8D91E54A69D00F2C527 /* StepCountCell.swift */,
+				274C1B471E56085800F73A9F /* HealthKitManager.swift */,
 			);
 			path = HealthyKitten;
 			sourceTree = "<group>";
@@ -252,6 +255,7 @@
 				27A5DE5A1E4E12BE00B90D97 /* EventsViewController.swift in Sources */,
 				27A5DE7C1E4E148000B90D97 /* PropertyListSerializable.swift in Sources */,
 				2782B8D81E54A67400F2C527 /* SleepCell.swift in Sources */,
+				274C1B481E56085800F73A9F /* HealthKitManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
