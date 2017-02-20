@@ -12,18 +12,39 @@ import HealthKit
 class HealthKitManager {
     
     private let healthStore = HKHealthStore()
+    var typesToWrite: Set<HKSampleType>
+    var typesToRead: Set<HKQuantityTypeIdentifier>
+    var objectTypesToRead: Set<HKObjectType>? {
+        get {
+            var objectTypes = Set<HKObjectType>()
+            for type in typesToRead {
+                guard let objectType = HKObjectType.quantityType(forIdentifier: type) else {
+                    continue
+                }
+                objectTypes.insert(objectType)
+            }
+            return objectTypes
+        }
+    }
+    
+    init(typesToWrite: Set<HKSampleType> = Set<HKSampleType>(), typesToRead: Set<HKQuantityTypeIdentifier> = Set<HKQuantityTypeIdentifier>()){
+        self.typesToWrite = typesToWrite
+        self.typesToRead = typesToRead
+    }
     
     func requestAuthorization(completion: @escaping (Bool, Error?) -> Swift.Void){
-        //TODO:// parameterise sampleType?
-        let sampleType = HKObjectType.quantityType(forIdentifier: .stepCount)!
-        healthStore.requestAuthorization(toShare: nil, read: [sampleType]) {
+        healthStore.requestAuthorization(toShare: self.typesToWrite, read: self.objectTypesToRead) {
             success, error in
             
+            guard error == nil else {
+                print("\(#function): \(error)")
+                return
+            }
             completion(success, error)
         }
     }
     
-    func startObservingDailyStepCount(completion: @escaping (Double?, Error?) -> Swift.Void) {
+    func startObserving(withQuery onEventQuery: HKQuery) {
         //TODO:// parameterise sampleType?
         let sampleType = HKObjectType.quantityType(forIdentifier: .stepCount)!
         
@@ -32,11 +53,11 @@ class HealthKitManager {
             
             guard error == nil else {
                 // Perform Proper Error Handling Here...
-                print("\(#function) \(error) ***")
+                print("\(#function) \(error) ")
                 abort()
             }
-
-            self.queryDailyStepCount(completion: completion)
+            // execute query
+            self.healthStore.execute(onEventQuery)
             
             // If you have subscribed for background updates you must call the completion handler here.
             completionHandler()
@@ -49,56 +70,7 @@ class HealthKitManager {
         }
     }
     
-    func queryDailyStepCount(completion: @escaping (Double?, Error?) -> Swift.Void) {
-        let sampleType = HKObjectType.quantityType(forIdentifier: .stepCount)!
 
-        let (startDate, endDate) = self.getStartEndDate()
-        let predicate = HKQuery.predicateForSamples(withStart: startDate,
-                                                    end: endDate,
-                                                    options: .strictEndDate)
-        
-        let query = HKStatisticsQuery(quantityType: sampleType,
-                                      quantitySamplePredicate: predicate,
-                                      options: .cumulativeSum) {
-            query, result, error in
-                                        
-            guard result != nil else {
-                print("\(#function): result is \(result)")
-                completion(nil, error)
-                return
-            }
-            
-            let totalStepCount = self.getTotalStepCount(from: result!)
-            
-            completion(totalStepCount, error)
-        }
-        
-        healthStore.execute(query)
-        
-        print("\(#function):\(NSDate()):\(query)")
-    }
-    
-    func getStartEndDate() -> (start: Date, end: Date) {
-        let calendar = Calendar.current
-        let endDate = Date()
-        let startDate = calendar.startOfDay(for: endDate)
-        
-        print("startDate: \(startDate)")
-        print("endDate: \(endDate)")
-        
-        return (startDate, endDate)
-    }
-    
-    func getTotalStepCount(from result: HKStatistics) -> Double{
-        var totalStepCount = 0.0
-        
-        if let quantity = result.sumQuantity() {
-            let unit = HKUnit.count()
-            totalStepCount = quantity.doubleValue(for: unit)
-        }
-        
-        return totalStepCount
-    }
     
     
 }

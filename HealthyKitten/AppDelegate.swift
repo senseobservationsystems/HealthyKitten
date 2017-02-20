@@ -15,7 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    let healthKitManager = HealthKitManager()
+    let healthKitManager = HealthKitManager(typesToRead: [.stepCount])
     /// Stores the sequence of "Health kit sample events" our app received. Possible event types are:
     /// - StepCount
     /// - Sleep
@@ -43,26 +43,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         eventsViewController.viewModel = EventsViewModel(store: eventsStore)
 
         // Set up HealthKit background delivery
-        healthKitManager.requestAuthorization { (success, error) in
-            guard error == nil else {
-                // Perform Proper Error Handling Here...
-                print("\(#function):\(error)")
-                abort()
-            }
-            self.healthKitManager.startObservingDailyStepCount() {
-                (value, error) in
-                guard error == nil else {
-                    print("\(#function):\(error)")
-                    abort()
-                }
-                
-                guard value != nil else {
-                    print("\(#function): value is nil")
-                    abort()
-                }
-                
-                self.onHKNewDailyStepCount(application, value: value!)
-            }
+        healthKitManager.requestAuthorization { success, error in
+            guard error == nil else { abort() }
+            self.onHKAuthoriazationGranted()
         }
 
         // Ask for permission to display alerts and badge numbers on the app icon.
@@ -88,14 +71,56 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("\(#function)")
     }
     
-    func onHKNewDailyStepCount(_ application: UIApplication, value: Double) {
+    func onHKAuthoriazationGranted(){
+        print("\(#function)")
+        let query = self.getQueryDailyStepCount(completion: {(value, error) in
+            guard error == nil else {
+                print("\(#function): \(error)")
+                return
+            }
+            
+            self.onHKNewDailyStepCount(value: value)
+        })
+        healthKitManager.startObserving(withQuery: query)
+    }
+    
+    func getQueryDailyStepCount(completion: @escaping (Double?, Error?) -> Swift.Void) -> HKStatisticsQuery {
+        let sampleType = HKObjectType.quantityType(forIdentifier: .stepCount)!
+        
+        let (startDate, endDate) = self.getStartEndDate()
+        let predicate = HKQuery.predicateForSamples(withStart: startDate,
+                                                    end: endDate,
+                                                    options: .strictEndDate)
+        
+        let query = HKStatisticsQuery(quantityType: sampleType,
+                                      quantitySamplePredicate: predicate,
+                                      options: .cumulativeSum) {
+                                        query, result, error in
+                                        
+                                        guard result != nil else {
+                                            print("\(#function): result is \(result)")
+                                            completion(nil, error)
+                                            return
+                                        }
+                                        
+                                        let totalStepCount = self.getTotalStepCount(from: result!)
+                                        
+                                        completion(totalStepCount, error)
+        }
+        
+        print("\(#function):\(NSDate()):\(query)")
+        return query
+    }
+    
+    func onHKNewDailyStepCount(value: Double?) {
         let payload = ["value": value]
+        let applicationState = UIApplication.shared.applicationState
         let event = HKSample.StepCount(receivedAt: Date(),
-                                       applicationState: application.applicationState,
+                                       applicationState: applicationState,
                                        payload: payload)
         self.eventsStore.value.elements.insert(event, at: 0)
         
-        if application.applicationState != .active {
+        if applicationState != .active {
             self.numberOfEventsReceivedWhileInBackgroundStore.value += 1
             
             let center = UNUserNotificationCenter.current()
@@ -112,6 +137,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         print("Horray! \(payload)")
+    }
+    
+    func getStartEndDate() -> (start: Date, end: Date) {
+        let calendar = Calendar.current
+        let endDate = Date()
+        let startDate = calendar.startOfDay(for: endDate)
+        
+        print("startDate: \(startDate)")
+        print("endDate: \(endDate)")
+        
+        return (startDate, endDate)
+    }
+    
+    func getTotalStepCount(from result: HKStatistics) -> Double{
+        var totalStepCount = 0.0
+        
+        if let quantity = result.sumQuantity() {
+            let unit = HKUnit.count()
+            totalStepCount = quantity.doubleValue(for: unit)
+        }
+        
+        return totalStepCount
     }
 }
 
