@@ -78,7 +78,7 @@ extension EventsViewController: UITableViewDataSource {
             cell.payloadLabel.text = String(describing: payload)
             return cell
         case .StepCount(receivedAt: let receivedAt, applicationState: let applicationState, payload: let payload):
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "StepCountCell", for: indexPath) as? SleepCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "StepCountCell", for: indexPath) as? StepCountCell else {
                 preconditionFailure("Expected a StepCountCell")
             }
             cell.dateLabel.text = DateFormatter.localizedString(from: receivedAt, dateStyle: .medium, timeStyle: .medium)

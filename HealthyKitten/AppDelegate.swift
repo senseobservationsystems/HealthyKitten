@@ -27,6 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
 
+        // Check UI components are properly set
         guard
             let tabBarController = window?.rootViewController as? UITabBarController,
             let tabBarChildViewControllers = tabBarController.viewControllers, tabBarChildViewControllers.count >= 2,
@@ -37,11 +38,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         else {
             preconditionFailure("View controllers not found")
         }
-
+        
+        // Set models to controller
         eventsViewController.viewModel = EventsViewModel(store: eventsStore)
-        //        secondViewController.viewModel = FillMemoryViewModel()
 
-        // TODO: set up HealthKit background delivery
+        // Set up HealthKit background delivery
         healthKitManager.requestAuthorization { (success, error) in
             guard error == nil else {
                 // Perform Proper Error Handling Here...
@@ -54,7 +55,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     print("\(#function):\(error)")
                     abort()
                 }
-                print("Horray! \(value)")
+                
+                guard value != nil else {
+                    print("\(#function): value is nil")
+                    abort()
+                }
+                
+                self.onHKNewDailyStepCount(application, value: value!)
             }
         }
 
@@ -68,6 +75,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 print("\(#function): \(error)")
             }
         })
+        
         return true
     }
     
@@ -79,9 +87,40 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
         print("\(#function)")
     }
-
+    
+    func onHKNewDailyStepCount(_ application: UIApplication, value: Double) {
+        let payload = ["value": value]
+        let event = HKSample.StepCount(receivedAt: Date(),
+                                       applicationState: application.applicationState,
+                                       payload: payload)
+        self.eventsStore.value.elements.insert(event, at: 0)
+        
+        if application.applicationState != .active {
+            self.numberOfEventsReceivedWhileInBackgroundStore.value += 1
+            
+            let center = UNUserNotificationCenter.current()
+            
+            let content = UNMutableNotificationContent(sampleType: event, badgeNumber: self.numberOfEventsReceivedWhileInBackgroundStore.value)
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+            let request = UNNotificationRequest(identifier: "NotificationTest", content: content, trigger: trigger)
+            
+            center.add(request, withCompletionHandler: { (error) in
+                if (error != nil) {
+                    print("\(#function):\(error)")
+                }
+            })
+        }
+        
+        print("Horray! \(payload)")
+    }
 }
 
-
-
-
+extension UNMutableNotificationContent {
+    convenience init(sampleType: HKSample ,badgeNumber: Int = 0) {
+        self.init()
+        badge = badgeNumber as NSNumber?
+        title = "StepCount updated"
+        body = "StepCount"
+        sound = UNNotificationSound.default()
+    }
+}

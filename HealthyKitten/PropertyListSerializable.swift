@@ -17,10 +17,10 @@ protocol PropertyListSerializable: Storable{
 enum HKSample {
     case Sleep(receivedAt: Date,
                applicationState: UIApplicationState,
-               payload: [NSObject : Any])
+               payload: [String : Any])
     case StepCount(receivedAt: Date,
                applicationState: UIApplicationState,
-               payload: [NSObject : Any])
+               payload: [String : Any])
 }
 
 extension HKSample: CustomStringConvertible {
@@ -47,7 +47,7 @@ extension HKSample: PropertyListSerializable {
                 guard let receivedAt = dict["receivedAt"] as? Date,
                       let applicationStatePropertyList = dict["applicationState"],
                       let applicationState = UIApplicationState(propertyList: applicationStatePropertyList),
-                      let payload = dict["payload"] as? [NSObject : Any]
+                      let payload = dict["payload"] as? [String : Any]
                 else{
                     return nil
                 }
@@ -56,7 +56,7 @@ extension HKSample: PropertyListSerializable {
                 guard let receivedAt = dict["receivedAt"] as? Date,
                     let applicationStatePropertyList = dict["applicationState"],
                     let applicationState = UIApplicationState(propertyList: applicationStatePropertyList),
-                    let payload = dict["payload"] as? [NSObject : Any]
+                    let payload = dict["payload"] as? [String : Any]
                     else{
                         return nil
                 }

@@ -32,12 +32,10 @@ class HealthKitManager {
             
             guard error == nil else {
                 // Perform Proper Error Handling Here...
-                print("*** An error occured while setting up the stepCount observer. \(error!.localizedDescription) ***")
+                print("\(#function) \(error) ***")
                 abort()
             }
-            
-            // Take whatever steps are necessary to update your app's data and UI
-            // This may involve executing other queries
+
             self.queryDailyStepCount(completion: completion)
             
             // If you have subscribed for background updates you must call the completion handler here.
@@ -54,7 +52,33 @@ class HealthKitManager {
     func queryDailyStepCount(completion: @escaping (Double?, Error?) -> Swift.Void) {
         let sampleType = HKObjectType.quantityType(forIdentifier: .stepCount)!
 
+        let (startDate, endDate) = self.getStartEndDate()
+        let predicate = HKQuery.predicateForSamples(withStart: startDate,
+                                                    end: endDate,
+                                                    options: .strictEndDate)
         
+        let query = HKStatisticsQuery(quantityType: sampleType,
+                                      quantitySamplePredicate: predicate,
+                                      options: .cumulativeSum) {
+            query, result, error in
+                                        
+            guard result != nil else {
+                print("\(#function): result is \(result)")
+                completion(nil, error)
+                return
+            }
+            
+            let totalStepCount = self.getTotalStepCount(from: result!)
+            
+            completion(totalStepCount, error)
+        }
+        
+        healthStore.execute(query)
+        
+        print("\(#function):\(NSDate()):\(query)")
+    }
+    
+    func getStartEndDate() -> (start: Date, end: Date) {
         let calendar = Calendar.current
         let endDate = Date()
         let startDate = calendar.startOfDay(for: endDate)
@@ -62,33 +86,18 @@ class HealthKitManager {
         print("startDate: \(startDate)")
         print("endDate: \(endDate)")
         
-        let predicate = HKQuery.predicateForSamples(withStart: startDate,
-                                                    end: endDate,
-                                                    options: .strictEndDate)
+        return (startDate, endDate)
+    }
+    
+    func getTotalStepCount(from result: HKStatistics) -> Double{
+        var totalStepCount = 0.0
         
-        let query = HKStatisticsQuery(quantityType: sampleType,
-                                      quantitySamplePredicate: predicate,
-                                      options: .cumulativeSum) { query, result, error in
-                                        
-                                        guard result != nil else {
-                                            print("\(#function): result is \(result)")
-                                            completion(nil, error)
-                                            return
-                                        }
-                                        
-                                        var totalStepCount = 0.0
-                                        
-                                        if let quantity = result!.sumQuantity() {
-                                            let unit = HKUnit.count()
-                                            totalStepCount = quantity.doubleValue(for: unit)
-                                        }
-                                        
-                                        completion(totalStepCount, error)
+        if let quantity = result.sumQuantity() {
+            let unit = HKUnit.count()
+            totalStepCount = quantity.doubleValue(for: unit)
         }
         
-        healthStore.execute(query)
-        
-        print("\(#function):\(NSDate()):\(query)")
+        return totalStepCount
     }
     
     
