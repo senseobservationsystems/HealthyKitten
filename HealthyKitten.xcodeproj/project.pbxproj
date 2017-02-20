@@ -21,6 +21,7 @@
 		27A5DE6F1E4E12BE00B90D97 /* HealthyKittenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A5DE6E1E4E12BE00B90D97 /* HealthyKittenTests.swift */; };
 		27A5DE7A1E4E13E000B90D97 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A5DE791E4E13E000B90D97 /* DataStore.swift */; };
 		27A5DE7C1E4E148000B90D97 /* PropertyListSerializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A5DE7B1E4E148000B90D97 /* PropertyListSerializable.swift */; };
+		27EF085A1E5B383E00CB893B /* DailyStepCountQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EF08591E5B383E00CB893B /* DailyStepCountQuery.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		27A5DE701E4E12BE00B90D97 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		27A5DE791E4E13E000B90D97 /* DataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
 		27A5DE7B1E4E148000B90D97 /* PropertyListSerializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PropertyListSerializable.swift; sourceTree = "<group>"; };
+		27EF08591E5B383E00CB893B /* DailyStepCountQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DailyStepCountQuery.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +108,7 @@
 			children = (
 				279FD3881E54BF1F00796759 /* HealthyKitten.entitlements */,
 				27A5DE571E4E12BE00B90D97 /* AppDelegate.swift */,
+				27EF08591E5B383E00CB893B /* DailyStepCountQuery.swift */,
 				27A5DE591E4E12BE00B90D97 /* EventsViewController.swift */,
 				2782B8D41E548C2B00F2C527 /* EventsViewModel.swift */,
 				27A5DE5B1E4E12BE00B90D97 /* SecondViewController.swift */,
@@ -251,6 +254,7 @@
 				27A5DE7A1E4E13E000B90D97 /* DataStore.swift in Sources */,
 				27A5DE581E4E12BE00B90D97 /* AppDelegate.swift in Sources */,
 				2782B8DA1E54A69D00F2C527 /* StepCountCell.swift in Sources */,
+				27EF085A1E5B383E00CB893B /* DailyStepCountQuery.swift in Sources */,
 				2782B8D51E548C2B00F2C527 /* EventsViewModel.swift in Sources */,
 				27A5DE5A1E4E12BE00B90D97 /* EventsViewController.swift in Sources */,
 				27A5DE7C1E4E148000B90D97 /* PropertyListSerializable.swift in Sources */,
