@@ -73,14 +73,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func onHKAuthoriazationGranted(){
         print("\(#function)")
-        let query = self.getQueryDailyStepCount(completion: {(value, error) in
-            guard error == nil else {
-                print("\(#function): \(error)")
-                return
-            }
-            
-            self.onHKNewDailyStepCount(value: value)
-        })
+        let sampleType = HKObjectType.quantityType(forIdentifier: .stepCount)!
+        
+        let (startDate, endDate) = self.getStartEndDate()
+        let predicate = HKQuery.predicateForSamples(withStart: startDate,
+                                                    end: endDate,
+                                                    options: .strictEndDate)
+        
+        let query = HKStatisticsQuery(quantityType: sampleType,
+                                      quantitySamplePredicate: predicate,
+                                      options: .cumulativeSum) {
+                                        query, result, error in
+                                        
+                                        guard result != nil else {
+                                            print("\(#function): result is \(result)")
+                                            return
+                                        }
+                                        
+                                        let totalStepCount = self.getTotalStepCount(from: result!)
+                                        
+                                        self.onHKNewDailyStepCount(value: totalStepCount)
+        }
+        
+        print("\(#function):\(NSDate()):\(query)")
         healthKitManager.startObserving(withQuery: query)
     }
     
