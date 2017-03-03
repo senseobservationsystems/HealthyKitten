@@ -15,7 +15,7 @@ protocol Observable {
 
 final class EventsViewModel {
     
-    init(store: UserDefaultsDataStore<SerializableArray<HKSample>>) {
+    init(store: UserDefaultsDataStore<SerializableArray<Event>>) {
         eventsStore = store
         eventsStore.addUpdateHandler { [weak self] store in
             guard let `self` = self else { // what is `self`?
@@ -25,8 +25,8 @@ final class EventsViewModel {
         }
     }
 
-    var eventsStore: UserDefaultsDataStore<SerializableArray<HKSample>>
-    var events: [HKSample] { return eventsStore.value.elements }
+    var eventsStore: UserDefaultsDataStore<SerializableArray<Event>>
+    var events: [Event] { return eventsStore.value.elements }
     
     var emptyStateViewHidden: Bool { return !eventsStore.value.isEmpty }
     var hasContentViewHidden: Bool { return eventsStore.value.isEmpty }

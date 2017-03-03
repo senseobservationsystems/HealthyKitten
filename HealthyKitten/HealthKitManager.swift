@@ -9,8 +9,8 @@
 import Foundation
 import HealthKit
 
-class HealthKitManager {
-    
+final class HealthKitManager {
+
     let healthStore = HKHealthStore()
     var typesToWrite: Set<HKSampleType>
     var typesToRead: Set<HKQuantityTypeIdentifier>
@@ -26,6 +26,9 @@ class HealthKitManager {
             return objectTypes
         }
     }
+
+    fileprivate var observers: [(HealthKitManager) -> ()] = []
+
     
     init(typesToWrite: Set<HKSampleType> = Set<HKSampleType>(), typesToRead: Set<HKQuantityTypeIdentifier> = Set<HKQuantityTypeIdentifier>()){
         self.typesToWrite = typesToWrite
@@ -33,7 +36,8 @@ class HealthKitManager {
     }
     
     func requestAuthorization(completion: @escaping (Bool, Error?) -> Swift.Void){
-        healthStore.requestAuthorization(toShare: self.typesToWrite, read: self.objectTypesToRead) {
+        healthStore.requestAuthorization(toShare: self.typesToWrite,
+                                         read: self.objectTypesToRead) {
             success, error in
             
             guard error == nil else {
@@ -44,7 +48,9 @@ class HealthKitManager {
         }
     }
     
-    func startBackgroundDelivery(forQuantityType quantityType: HKQuantityTypeIdentifier, completion: @escaping (Error?) -> Swift.Void) {
+    func startBackgroundDelivery(forQuantityType quantityType: HKQuantityTypeIdentifier,
+                                 frequency: HKUpdateFrequency,
+                                 onEvent: @escaping (Error?) -> Swift.Void) {
         //TODO:// parameterise sampleType?
         let sampleType = HKObjectType.quantityType(forIdentifier: quantityType)!
         
@@ -52,7 +58,7 @@ class HealthKitManager {
             query, completionHandler, error in
             
             // execute query
-            completion(error)
+            onEvent(error)
             
             // completionHandler that is given from background delivery. Needs to call to make sure that this callback is called next time again.
             completionHandler()
@@ -63,8 +69,5 @@ class HealthKitManager {
             print("Background Delivery completed")
         }
     }
-    
-
-    
-    
 }
+

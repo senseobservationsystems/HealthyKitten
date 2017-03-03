@@ -124,7 +124,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <prototypes>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SleepCell" rowHeight="125" id="SOD-Uq-R9N" userLabel="SleepCell" customClass="SleepCell" customModule="HealthyKitten" customModuleProvider="target">
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="HKEventCell" rowHeight="125" id="SOD-Uq-R9N" userLabel="HKEventCell" customClass="HKEventCell" customModule="HealthyKitten" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="28" width="375" height="125"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="SOD-Uq-R9N" id="QZ6-AB-4U4">
@@ -144,20 +144,26 @@
                                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="P5m-Eo-9iq">
                                                                     <rect key="frame" x="30" y="0.0" width="345" height="124"/>
                                                                     <subviews>
-                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Sleep" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qZF-Wh-1me">
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="HKEvent" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qZF-Wh-1me">
                                                                             <rect key="frame" x="8" y="8" width="329" height="20.5"/>
                                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
-                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5qr-4a-tJS">
-                                                                            <rect key="frame" x="8" y="37" width="329" height="20.5"/>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="SampleType" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5qr-4a-tJS" userLabel="Sample Type Label">
+                                                                            <rect key="frame" x="8" y="30" width="329" height="20.5"/>
+                                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y7w-Bg-qjB">
+                                                                            <rect key="frame" x="8" y="52" width="329" height="20.5"/>
                                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="Application State" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4iX-Hk-zki">
-                                                                            <rect key="frame" x="8" y="66.5" width="329" height="20.5"/>
+                                                                            <rect key="frame" x="8" y="73.5" width="329" height="20.5"/>
                                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                                             <nil key="highlightedColor"/>
@@ -183,11 +189,12 @@
                                                 </tableViewCellContentView>
                                                 <connections>
                                                     <outlet property="applicationStateLabel" destination="4iX-Hk-zki" id="7H8-p3-vGe"/>
-                                                    <outlet property="dateLabel" destination="5qr-4a-tJS" id="8cp-pd-Yy7"/>
+                                                    <outlet property="dateLabel" destination="Y7w-Bg-qjB" id="up5-YG-UT5"/>
                                                     <outlet property="payloadLabel" destination="RSZ-sD-o9G" id="93J-4y-2nt"/>
+                                                    <outlet property="sampleTypeLabel" destination="5qr-4a-tJS" id="os4-Bl-glc"/>
                                                 </connections>
                                             </tableViewCell>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="StepCountCell" rowHeight="125" id="c2G-vH-Npi" userLabel="StepCountCell" customClass="StepCountCell" customModule="HealthyKitten" customModuleProvider="target">
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="StepCountCell" rowHeight="125" id="c2G-vH-Npi" userLabel="AppEventCell" customClass="AppEventCell" customModule="HealthyKitten" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="153" width="375" height="125"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="c2G-vH-Npi" id="ByI-bt-Xsy">
@@ -207,25 +214,19 @@
                                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="Ora-Uu-NQL">
                                                                     <rect key="frame" x="30" y="0.0" width="345" height="124"/>
                                                                     <subviews>
-                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="StepCount" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zDs-Fz-BJK" userLabel="StepCount">
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="AppEvent" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zDs-Fz-BJK" userLabel="App Event">
                                                                             <rect key="frame" x="8" y="8" width="329" height="20.5"/>
                                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ov0-dH-wbw">
-                                                                            <rect key="frame" x="8" y="37" width="329" height="20.5"/>
+                                                                            <rect key="frame" x="8" y="52" width="329" height="20.5"/>
                                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
-                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="Application State" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N0j-TP-SPl">
-                                                                            <rect key="frame" x="8" y="66.5" width="329" height="20.5"/>
-                                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                                            <nil key="highlightedColor"/>
-                                                                        </label>
-                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Payload" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WT1-8i-fI2">
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="AppEvent" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N0j-TP-SPl" userLabel="App Event Label">
                                                                             <rect key="frame" x="8" y="95.5" width="329" height="20.5"/>
                                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -245,9 +246,8 @@
                                                     </constraints>
                                                 </tableViewCellContentView>
                                                 <connections>
-                                                    <outlet property="applicationStateLabel" destination="N0j-TP-SPl" id="34W-fC-uQS"/>
+                                                    <outlet property="appEventLabel" destination="N0j-TP-SPl" id="qan-Sj-5Is"/>
                                                     <outlet property="dateLabel" destination="Ov0-dH-wbw" id="6la-sx-uEn"/>
-                                                    <outlet property="payloadLabel" destination="WT1-8i-fI2" id="AQV-sj-t7e"/>
                                                 </connections>
                                             </tableViewCell>
                                         </prototypes>

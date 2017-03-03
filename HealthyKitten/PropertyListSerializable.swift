@@ -14,27 +14,27 @@ protocol PropertyListSerializable: Storable{
     func propertyListRepresentation() -> Any
 }
 
-enum HKSample {
-    case Sleep(receivedAt: Date,
+enum Event {
+    case HKEvent(sampleType: String,
+               receivedAt: Date,
                applicationState: UIApplicationState,
                payload: [String : Any])
-    case StepCount(receivedAt: Date,
-               applicationState: UIApplicationState,
-               payload: [String : Any])
+    case AppEvent(receivedAt: Date,
+                  appEvent: String)
 }
 
-extension HKSample: CustomStringConvertible {
+extension Event: CustomStringConvertible {
     public var description: String {
         switch self {
-        case .Sleep(receivedAt: let receivedAt, applicationState: let applicationState, payload: let payload):
-            return "Sleep: \(receivedAt) - \(applicationState) - \(payload)"
-        case .StepCount(receivedAt: let receivedAt, applicationState: let applicationState, payload: let payload):
-            return "StepCount: \(receivedAt) - \(applicationState) - \(payload)"
+        case .HKEvent(sampleType: let sampleType, receivedAt: let receivedAt, applicationState: let applicationState, payload: let payload):
+            return "HKEvent: \(sampleType) - \(receivedAt) - \(applicationState) - \(payload)"
+        case .AppEvent(receivedAt: let receivedAt, appEvent: let appEvent):
+            return "AppEvent: \(receivedAt) - \(appEvent)"
         }
     }
 }
 
-extension HKSample: PropertyListSerializable {
+extension Event: PropertyListSerializable {
     init?(propertyList: Any){
         guard let dict = propertyList as? [String: Any],
               let type = dict["type"] as? String
@@ -43,24 +43,23 @@ extension HKSample: PropertyListSerializable {
         }
         
         switch type {
-            case "Sleep":
-                guard let receivedAt = dict["receivedAt"] as? Date,
+            case "HKEvent":
+                guard let sampleType = dict["sampleType"] as? String,
+                      let receivedAt = dict["receivedAt"] as? Date,
                       let applicationStatePropertyList = dict["applicationState"],
                       let applicationState = UIApplicationState(propertyList: applicationStatePropertyList),
                       let payload = dict["payload"] as? [String : Any]
                 else{
                     return nil
                 }
-                self = .Sleep(receivedAt: receivedAt, applicationState: applicationState, payload: payload)
-            case "StepCount":
+                self = .HKEvent(sampleType: sampleType, receivedAt: receivedAt, applicationState: applicationState, payload: payload)
+            case "AppEvent":
                 guard let receivedAt = dict["receivedAt"] as? Date,
-                    let applicationStatePropertyList = dict["applicationState"],
-                    let applicationState = UIApplicationState(propertyList: applicationStatePropertyList),
-                    let payload = dict["payload"] as? [String : Any]
+                    let appEvent = dict["appEvent"] as? String
                     else{
                         return nil
                 }
-                self = .StepCount(receivedAt: receivedAt, applicationState: applicationState, payload: payload)
+                self = .AppEvent(receivedAt: receivedAt, appEvent: appEvent)
             default:
                 fatalError("Unknown event type: \(type)")
         }
@@ -68,19 +67,19 @@ extension HKSample: PropertyListSerializable {
     
     func propertyListRepresentation() -> Any {
         switch self {
-        case .Sleep(receivedAt: let receivedAt, applicationState: let applicationState, payload: let payload):
+        case .HKEvent(sampleType: let sampleType, receivedAt: let receivedAt, applicationState: let applicationState, payload: let payload):
             return [
-                "type": "Sleep",
+                "type": "HKEvent",
+                "sampleType": sampleType,
                 "receivedAt": receivedAt,
                 "applicationState": applicationState.propertyListRepresentation(),
                 "payload": payload
             ]
-        case .StepCount(receivedAt: let receivedAt, applicationState: let applicationState, payload: let payload):
+        case .AppEvent(receivedAt: let receivedAt, appEvent: let appEvent):
             return [
-                "type": "StepCount",
+                "type": "AppEvent",
                 "receivedAt": receivedAt,
-                "applicationState": applicationState.propertyListRepresentation(),
-                "payload": payload
+                "appEvent": appEvent
             ]
         }
     }
