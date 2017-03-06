@@ -16,7 +16,7 @@
 		279FD38B1E54BF1F00796759 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 279FD38A1E54BF1F00796759 /* HealthKit.framework */; };
 		27A5DE581E4E12BE00B90D97 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A5DE571E4E12BE00B90D97 /* AppDelegate.swift */; };
 		27A5DE5A1E4E12BE00B90D97 /* EventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A5DE591E4E12BE00B90D97 /* EventsViewController.swift */; };
-		27A5DE5C1E4E12BE00B90D97 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A5DE5B1E4E12BE00B90D97 /* SecondViewController.swift */; };
+		27A5DE5C1E4E12BE00B90D97 /* QueryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A5DE5B1E4E12BE00B90D97 /* QueryViewController.swift */; };
 		27A5DE5F1E4E12BE00B90D97 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 27A5DE5D1E4E12BE00B90D97 /* Main.storyboard */; };
 		27A5DE611E4E12BE00B90D97 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 27A5DE601E4E12BE00B90D97 /* Assets.xcassets */; };
 		27A5DE641E4E12BE00B90D97 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 27A5DE621E4E12BE00B90D97 /* LaunchScreen.storyboard */; };
@@ -47,7 +47,7 @@
 		27A5DE541E4E12BE00B90D97 /* HealthyKitten.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HealthyKitten.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		27A5DE571E4E12BE00B90D97 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		27A5DE591E4E12BE00B90D97 /* EventsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsViewController.swift; sourceTree = "<group>"; };
-		27A5DE5B1E4E12BE00B90D97 /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
+		27A5DE5B1E4E12BE00B90D97 /* QueryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryViewController.swift; sourceTree = "<group>"; };
 		27A5DE5E1E4E12BE00B90D97 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		27A5DE601E4E12BE00B90D97 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		27A5DE631E4E12BE00B90D97 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -113,7 +113,7 @@
 				276C73191E69A9D0000E88FD /* QueryHelper.swift */,
 				27A5DE591E4E12BE00B90D97 /* EventsViewController.swift */,
 				2782B8D41E548C2B00F2C527 /* EventsViewModel.swift */,
-				27A5DE5B1E4E12BE00B90D97 /* SecondViewController.swift */,
+				27A5DE5B1E4E12BE00B90D97 /* QueryViewController.swift */,
 				27A5DE5D1E4E12BE00B90D97 /* Main.storyboard */,
 				27A5DE601E4E12BE00B90D97 /* Assets.xcassets */,
 				27A5DE621E4E12BE00B90D97 /* LaunchScreen.storyboard */,
@@ -253,7 +253,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				27A5DE5C1E4E12BE00B90D97 /* SecondViewController.swift in Sources */,
+				27A5DE5C1E4E12BE00B90D97 /* QueryViewController.swift in Sources */,
 				27A5DE7A1E4E13E000B90D97 /* DataStore.swift in Sources */,
 				27A5DE581E4E12BE00B90D97 /* AppDelegate.swift in Sources */,
 				2782B8DA1E54A69D00F2C527 /* AppEventCell.swift in Sources */,
