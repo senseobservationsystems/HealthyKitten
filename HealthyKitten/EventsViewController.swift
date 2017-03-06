@@ -53,8 +53,6 @@ class EventsViewController: UIViewController {
                                                   applicationActivities: nil)
         self.present(activityVC, animated: true, completion: nil)
     }
-
-
 }
 
 extension EventsViewController: UITableViewDataSource {

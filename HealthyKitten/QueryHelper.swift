@@ -29,8 +29,9 @@ class QueryHelper {
                                       options: .cumulativeSum){
             query, result, error in
                                         
-            // TODO: handler error properly
+            // Callback on receving the result
             guard error == nil, result != nil else { return }
+            // Handler expects a Double value as a parameter
             handler(self.getTotalStepCount(from: result!))
         }
         
@@ -48,6 +49,7 @@ class QueryHelper {
             query, results, error in
                                 
             guard error == nil, results != nil else { return }
+            // Handler expects a Double value as a parameter
             handler(self.getTotalSleep(from: results!))
         }
     }
@@ -99,13 +101,9 @@ class QueryHelper {
     }
     
     class func getTotalStepCount(from result: HKStatistics) -> Double{
-        var totalStepCount = 0.0
+        guard let quantity = result.sumQuantity() else { return 0.0 }
         
-        if let quantity = result.sumQuantity() {
-            let unit = HKUnit.count()
-            totalStepCount = quantity.doubleValue(for: unit)
-        }
-        
-        return totalStepCount
+        let unit = HKUnit.count()
+        return quantity.doubleValue(for: unit)
     }
 }

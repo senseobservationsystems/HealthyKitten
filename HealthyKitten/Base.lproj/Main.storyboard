@@ -194,7 +194,7 @@
                                                     <outlet property="sampleTypeLabel" destination="5qr-4a-tJS" id="os4-Bl-glc"/>
                                                 </connections>
                                             </tableViewCell>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="StepCountCell" rowHeight="125" id="c2G-vH-Npi" userLabel="AppEventCell" customClass="AppEventCell" customModule="HealthyKitten" customModuleProvider="target">
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AppEventCell" rowHeight="125" id="c2G-vH-Npi" userLabel="AppEventCell" customClass="AppEventCell" customModule="HealthyKitten" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="153" width="375" height="125"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="c2G-vH-Npi" id="ByI-bt-Xsy">

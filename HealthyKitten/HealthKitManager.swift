@@ -36,28 +36,6 @@ final class HealthKitManager {
         }
     }
     
-    func startBackgroundDelivery(forQuantityType quantityType: HKQuantityTypeIdentifier,
-                                 frequency: HKUpdateFrequency,
-                                 onEvent: @escaping (Error?) -> Swift.Void) {
-        //TODO:// parameterise sampleType?
-        let sampleType = HKObjectType.quantityType(forIdentifier: quantityType)!
-        
-        let query = HKObserverQuery(sampleType: sampleType, predicate: nil) {
-            query, completionHandler, error in
-            
-            // execute query
-            onEvent(error)
-            
-            // completionHandler that is given from background delivery. Needs to call to make sure that this callback is called next time again.
-            completionHandler()
-        }
-        self.healthStore.execute(query)
-        self.healthStore.enableBackgroundDelivery(for: sampleType, frequency: .immediate){
-            (success, error) in
-            print("Background Delivery completed")
-        }
-    }
-    
     func startBackgroundDelivery(forSampleType sampleType: HKSampleType,
                                  frequency: HKUpdateFrequency,
                                  onEvent: @escaping (Error?) -> Swift.Void) {

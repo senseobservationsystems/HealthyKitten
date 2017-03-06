@@ -66,8 +66,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {
+        let event = Event.AppEvent(receivedAt: Date(), appEvent: "App in focus")
+        self.eventsStore.value.elements.insert(event, at: 0)
+        
         numberOfEventsReceivedWhileInBackgroundStore.value = 0
         application.applicationIconBadgeNumber = numberOfEventsReceivedWhileInBackgroundStore.value
+    }
+    
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        let event = Event.AppEvent(receivedAt: Date(), appEvent: "App did enter background")
+        self.eventsStore.value.elements.insert(event, at: 0)
     }
     
     func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
@@ -84,12 +92,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         guard let stepCountType = HKObjectType.quantityType(forIdentifier: .stepCount) else {
             return
         }
+        
+        let onNewHKDailyStepCount = {(value: Double?) in
+            let payload = ["value": value]
+            let applicationState = UIApplication.shared.applicationState
+            let event = Event.HKEvent(sampleType: "StepCount",
+                                      receivedAt: Date(),
+                                      applicationState: applicationState,
+                                      payload: payload)
+            self.eventsStore.value.elements.insert(event, at: 0)
+            
+            if applicationState != .active {
+                self.sendNotification(event: event)
+            }
+        }
+        
         healthKitManager.startBackgroundDelivery(forSampleType: stepCountType,
                                                  frequency: .immediate) {
             error in
             
             // The action that should be executed on background delivery
-            let query = QueryHelper.getStepCountQuery(for: .daily, handler: self.onHKNewDailyStepCount)
+            let query = QueryHelper.getStepCountQuery(for: .daily, handler: onNewHKDailyStepCount)
             self.healthKitManager.healthStore.execute(query)
         }
     }
@@ -98,47 +121,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         guard let sleepType = HKObjectType.categoryType(forIdentifier: .sleepAnalysis) else {
             return
         }
+        
+        let onNewHKDailySleep = { (value: Double?) in
+            let payload = ["value": value]
+            let applicationState = UIApplication.shared.applicationState
+            let event = Event.HKEvent(sampleType: "Sleep",
+                                      receivedAt: Date(),
+                                      applicationState: applicationState,
+                                      payload: payload)
+            self.eventsStore.value.elements.insert(event, at: 0)
+            
+            if applicationState != .active {
+                self.sendNotification(event: event)
+            }
+        }
+
         healthKitManager.startBackgroundDelivery(forSampleType: sleepType,
                                                  frequency: .immediate) {
             error in
                                                     
             // The action that should be executed on background delivery
-            let query = QueryHelper.getSleepQuery(for: .daily, handler: self.onHKNewDailySleep)
+            let query = QueryHelper.getSleepQuery(for: .daily, handler: onNewHKDailySleep)
             self.healthKitManager.healthStore.execute(query)
         }
-    }
-    
-    func onHKNewDailyStepCount(value: Double?) {
-        let payload = ["value": value]
-        let applicationState = UIApplication.shared.applicationState
-        let event = Event.HKEvent(sampleType: "StepCount",
-                                  receivedAt: Date(),
-                                  applicationState: applicationState,
-                                  payload: payload)
-        self.eventsStore.value.elements.insert(event, at: 0)
-        
-        if applicationState != .active {
-            self.sendNotification(event: event)
-        }
-        
-        print("Horray! \(payload)")
-    }
-    
-    
-    func onHKNewDailySleep(value: Double?) {
-        let payload = ["value": value]
-        let applicationState = UIApplication.shared.applicationState
-        let event = Event.HKEvent(sampleType: "Sleep",
-                                  receivedAt: Date(),
-                                  applicationState: applicationState,
-                                  payload: payload)
-        self.eventsStore.value.elements.insert(event, at: 0)
-        
-        if applicationState != .active {
-            self.sendNotification(event: event)
-        }
-        
-        print("Horray! \(payload)")
     }
     
     func sendNotification(event: Event){
