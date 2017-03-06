@@ -13,31 +13,19 @@ final class HealthKitManager {
 
     let healthStore = HKHealthStore()
     var typesToWrite: Set<HKSampleType>
-    var typesToRead: Set<HKQuantityTypeIdentifier>
-    var objectTypesToRead: Set<HKObjectType>? {
-        get {
-            var objectTypes = Set<HKObjectType>()
-            for type in typesToRead {
-                guard let objectType = HKObjectType.quantityType(forIdentifier: type) else {
-                    continue
-                }
-                objectTypes.insert(objectType)
-            }
-            return objectTypes
-        }
-    }
+    var typesToRead: Set<HKObjectType>
 
     fileprivate var observers: [(HealthKitManager) -> ()] = []
 
     
-    init(typesToWrite: Set<HKSampleType> = Set<HKSampleType>(), typesToRead: Set<HKQuantityTypeIdentifier> = Set<HKQuantityTypeIdentifier>()){
+    init(typesToWrite: Set<HKSampleType> = Set<HKSampleType>(), typesToRead: Set<HKObjectType> = Set<HKObjectType>()){
         self.typesToWrite = typesToWrite
         self.typesToRead = typesToRead
     }
     
     func requestAuthorization(completion: @escaping (Bool, Error?) -> Swift.Void){
         healthStore.requestAuthorization(toShare: self.typesToWrite,
-                                         read: self.objectTypesToRead) {
+                                         read: self.typesToRead) {
             success, error in
             
             guard error == nil else {
@@ -53,6 +41,26 @@ final class HealthKitManager {
                                  onEvent: @escaping (Error?) -> Swift.Void) {
         //TODO:// parameterise sampleType?
         let sampleType = HKObjectType.quantityType(forIdentifier: quantityType)!
+        
+        let query = HKObserverQuery(sampleType: sampleType, predicate: nil) {
+            query, completionHandler, error in
+            
+            // execute query
+            onEvent(error)
+            
+            // completionHandler that is given from background delivery. Needs to call to make sure that this callback is called next time again.
+            completionHandler()
+        }
+        self.healthStore.execute(query)
+        self.healthStore.enableBackgroundDelivery(for: sampleType, frequency: .immediate){
+            (success, error) in
+            print("Background Delivery completed")
+        }
+    }
+    
+    func startBackgroundDelivery(forSampleType sampleType: HKSampleType,
+                                 frequency: HKUpdateFrequency,
+                                 onEvent: @escaping (Error?) -> Swift.Void) {
         
         let query = HKObserverQuery(sampleType: sampleType, predicate: nil) {
             query, completionHandler, error in

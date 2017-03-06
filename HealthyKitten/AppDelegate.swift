@@ -15,7 +15,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    let healthKitManager = HealthKitManager(typesToRead: [.stepCount])
+    static let stepCount = HKObjectType.quantityType(forIdentifier: .stepCount)!
+    static let sleep = HKObjectType.categoryType(forIdentifier: .sleepAnalysis)!
+    
+    let healthKitManager = HealthKitManager(typesToRead: [stepCount, sleep])
     /// Stores the sequence of "Health kit sample events" our app received. Possible event types are:
     /// - StepCount
     /// - Sleep
@@ -73,26 +76,59 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     
     func onHKAuthoriazationGranted(){
-        // Authorization is granted.
-        healthKitManager.startBackgroundDelivery(forQuantityType: .stepCount,
+        self.setStepCountQuery()
+        self.setSleepQuery()
+    }
+    
+    func setStepCountQuery(){
+        guard let stepCountType = HKObjectType.quantityType(forIdentifier: .stepCount) else {
+            return
+        }
+        healthKitManager.startBackgroundDelivery(forSampleType: stepCountType,
                                                  frequency: .immediate) {
             error in
             
-            var queries = [HKQuery]()
-            
-            queries.append(QueryHelper.getStepCountQuery(for: .daily,
-                                                         handler: self.onHKNewDailyStepCount))
-            for query in queries {
-                self.healthKitManager.healthStore.execute(query)
-            }
+            // The action that should be executed on background delivery
+            let query = QueryHelper.getStepCountQuery(for: .daily, handler: self.onHKNewDailyStepCount)
+            self.healthKitManager.healthStore.execute(query)
         }
     }
     
+    func setSleepQuery(){
+        guard let sleepType = HKObjectType.categoryType(forIdentifier: .sleepAnalysis) else {
+            return
+        }
+        healthKitManager.startBackgroundDelivery(forSampleType: sleepType,
+                                                 frequency: .immediate) {
+            error in
+                                                    
+            // The action that should be executed on background delivery
+            let query = QueryHelper.getSleepQuery(for: .daily, handler: self.onHKNewDailySleep)
+            self.healthKitManager.healthStore.execute(query)
+        }
+    }
     
     func onHKNewDailyStepCount(value: Double?) {
         let payload = ["value": value]
         let applicationState = UIApplication.shared.applicationState
         let event = Event.HKEvent(sampleType: "StepCount",
+                                  receivedAt: Date(),
+                                  applicationState: applicationState,
+                                  payload: payload)
+        self.eventsStore.value.elements.insert(event, at: 0)
+        
+        if applicationState != .active {
+            self.sendNotification(event: event)
+        }
+        
+        print("Horray! \(payload)")
+    }
+    
+    
+    func onHKNewDailySleep(value: Double?) {
+        let payload = ["value": value]
+        let applicationState = UIApplication.shared.applicationState
+        let event = Event.HKEvent(sampleType: "Sleep",
                                   receivedAt: Date(),
                                   applicationState: applicationState,
                                   payload: payload)
