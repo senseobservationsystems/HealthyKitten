@@ -1,5 +1,5 @@
 //
-//  StepCountCell.swift
+//  AppEventCell.swift
 //  HealthyKitten
 //
 //  Created by Tatsuya Kaneko on 15/02/17.
@@ -10,10 +10,9 @@ import Foundation
 
 import UIKit
 
-class StepCountCell: UITableViewCell {
+class AppEventCell: UITableViewCell {
     
     @IBOutlet weak var dateLabel: UILabel!
-    @IBOutlet weak var applicationStateLabel: UILabel!
-    @IBOutlet weak var payloadLabel: UILabel!
+    @IBOutlet weak var appEventLabel: UILabel!
     
 }

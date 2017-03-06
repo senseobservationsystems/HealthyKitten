@@ -8,9 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		274C1B481E56085800F73A9F /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 274C1B471E56085800F73A9F /* HealthKitManager.swift */; };
+		276C73181E6989FE000E88FD /* HealthKitManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276C73171E6989FE000E88FD /* HealthKitManagerDelegate.swift */; };
+		276C731A1E69A9D0000E88FD /* QueryHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276C73191E69A9D0000E88FD /* QueryHelper.swift */; };
 		2782B8D51E548C2B00F2C527 /* EventsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2782B8D41E548C2B00F2C527 /* EventsViewModel.swift */; };
-		2782B8D81E54A67400F2C527 /* SleepCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2782B8D71E54A67400F2C527 /* SleepCell.swift */; };
-		2782B8DA1E54A69D00F2C527 /* StepCountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2782B8D91E54A69D00F2C527 /* StepCountCell.swift */; };
+		2782B8D81E54A67400F2C527 /* HKEventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2782B8D71E54A67400F2C527 /* HKEventCell.swift */; };
+		2782B8DA1E54A69D00F2C527 /* AppEventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2782B8D91E54A69D00F2C527 /* AppEventCell.swift */; };
 		279FD38B1E54BF1F00796759 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 279FD38A1E54BF1F00796759 /* HealthKit.framework */; };
 		27A5DE581E4E12BE00B90D97 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A5DE571E4E12BE00B90D97 /* AppDelegate.swift */; };
 		27A5DE5A1E4E12BE00B90D97 /* EventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A5DE591E4E12BE00B90D97 /* EventsViewController.swift */; };
@@ -35,9 +37,11 @@
 
 /* Begin PBXFileReference section */
 		274C1B471E56085800F73A9F /* HealthKitManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthKitManager.swift; sourceTree = "<group>"; };
+		276C73171E6989FE000E88FD /* HealthKitManagerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthKitManagerDelegate.swift; sourceTree = "<group>"; };
+		276C73191E69A9D0000E88FD /* QueryHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryHelper.swift; sourceTree = "<group>"; };
 		2782B8D41E548C2B00F2C527 /* EventsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventsViewModel.swift; sourceTree = "<group>"; };
-		2782B8D71E54A67400F2C527 /* SleepCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SleepCell.swift; sourceTree = "<group>"; };
-		2782B8D91E54A69D00F2C527 /* StepCountCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StepCountCell.swift; sourceTree = "<group>"; };
+		2782B8D71E54A67400F2C527 /* HKEventCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKEventCell.swift; sourceTree = "<group>"; };
+		2782B8D91E54A69D00F2C527 /* AppEventCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppEventCell.swift; sourceTree = "<group>"; };
 		279FD3881E54BF1F00796759 /* HealthyKitten.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HealthyKitten.entitlements; sourceTree = "<group>"; };
 		279FD38A1E54BF1F00796759 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		27A5DE541E4E12BE00B90D97 /* HealthyKitten.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HealthyKitten.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -106,6 +110,7 @@
 			children = (
 				279FD3881E54BF1F00796759 /* HealthyKitten.entitlements */,
 				27A5DE571E4E12BE00B90D97 /* AppDelegate.swift */,
+				276C73191E69A9D0000E88FD /* QueryHelper.swift */,
 				27A5DE591E4E12BE00B90D97 /* EventsViewController.swift */,
 				2782B8D41E548C2B00F2C527 /* EventsViewModel.swift */,
 				27A5DE5B1E4E12BE00B90D97 /* SecondViewController.swift */,
@@ -115,9 +120,10 @@
 				27A5DE651E4E12BE00B90D97 /* Info.plist */,
 				27A5DE791E4E13E000B90D97 /* DataStore.swift */,
 				27A5DE7B1E4E148000B90D97 /* PropertyListSerializable.swift */,
-				2782B8D71E54A67400F2C527 /* SleepCell.swift */,
-				2782B8D91E54A69D00F2C527 /* StepCountCell.swift */,
+				2782B8D71E54A67400F2C527 /* HKEventCell.swift */,
+				2782B8D91E54A69D00F2C527 /* AppEventCell.swift */,
 				274C1B471E56085800F73A9F /* HealthKitManager.swift */,
+				276C73171E6989FE000E88FD /* HealthKitManagerDelegate.swift */,
 			);
 			path = HealthyKitten;
 			sourceTree = "<group>";
@@ -250,12 +256,14 @@
 				27A5DE5C1E4E12BE00B90D97 /* SecondViewController.swift in Sources */,
 				27A5DE7A1E4E13E000B90D97 /* DataStore.swift in Sources */,
 				27A5DE581E4E12BE00B90D97 /* AppDelegate.swift in Sources */,
-				2782B8DA1E54A69D00F2C527 /* StepCountCell.swift in Sources */,
+				2782B8DA1E54A69D00F2C527 /* AppEventCell.swift in Sources */,
 				2782B8D51E548C2B00F2C527 /* EventsViewModel.swift in Sources */,
 				27A5DE5A1E4E12BE00B90D97 /* EventsViewController.swift in Sources */,
 				27A5DE7C1E4E148000B90D97 /* PropertyListSerializable.swift in Sources */,
-				2782B8D81E54A67400F2C527 /* SleepCell.swift in Sources */,
+				276C73181E6989FE000E88FD /* HealthKitManagerDelegate.swift in Sources */,
+				2782B8D81E54A67400F2C527 /* HKEventCell.swift in Sources */,
 				274C1B481E56085800F73A9F /* HealthKitManager.swift in Sources */,
+				276C731A1E69A9D0000E88FD /* QueryHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

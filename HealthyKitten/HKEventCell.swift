@@ -1,5 +1,5 @@
 //
-//  SleepCell.swift
+//  HKEventCell.swift
 //  HealthyKitten
 //
 //  Created by Tatsuya Kaneko on 15/02/17.
@@ -8,8 +8,9 @@
 
 import UIKit
 
-class SleepCell: UITableViewCell {
+class HKEventCell: UITableViewCell {
     
+    @IBOutlet weak var sampleTypeLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var applicationStateLabel: UILabel!
     @IBOutlet weak var payloadLabel: UILabel!

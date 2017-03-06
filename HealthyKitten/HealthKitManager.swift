@@ -9,96 +9,51 @@
 import Foundation
 import HealthKit
 
-class HealthKitManager {
+final class HealthKitManager {
+
+    let healthStore = HKHealthStore()
+    var typesToWrite: Set<HKSampleType>
+    var typesToRead: Set<HKObjectType>
+
+    fileprivate var observers: [(HealthKitManager) -> ()] = []
+
     
-    private let healthStore = HKHealthStore()
+    init(typesToWrite: Set<HKSampleType> = Set<HKSampleType>(), typesToRead: Set<HKObjectType> = Set<HKObjectType>()){
+        self.typesToWrite = typesToWrite
+        self.typesToRead = typesToRead
+    }
     
     func requestAuthorization(completion: @escaping (Bool, Error?) -> Swift.Void){
-        //TODO:// parameterise sampleType?
-        let sampleType = HKObjectType.quantityType(forIdentifier: .stepCount)!
-        healthStore.requestAuthorization(toShare: nil, read: [sampleType]) {
+        healthStore.requestAuthorization(toShare: self.typesToWrite,
+                                         read: self.typesToRead) {
             success, error in
             
+            guard error == nil else {
+                print("\(#function): \(error)")
+                return
+            }
             completion(success, error)
         }
     }
     
-    func startObservingDailyStepCount(completion: @escaping (Double?, Error?) -> Swift.Void) {
-        //TODO:// parameterise sampleType?
-        let sampleType = HKObjectType.quantityType(forIdentifier: .stepCount)!
+    func startBackgroundDelivery(forSampleType sampleType: HKSampleType,
+                                 frequency: HKUpdateFrequency,
+                                 onEvent: @escaping (Error?) -> Swift.Void) {
         
         let query = HKObserverQuery(sampleType: sampleType, predicate: nil) {
             query, completionHandler, error in
             
-            guard error == nil else {
-                // Perform Proper Error Handling Here...
-                print("\(#function) \(error) ***")
-                abort()
-            }
-
-            self.queryDailyStepCount(completion: completion)
+            // execute query
+            onEvent(error)
             
-            // If you have subscribed for background updates you must call the completion handler here.
+            // completionHandler that is given from background delivery. Needs to call to make sure that this callback is called next time again.
             completionHandler()
         }
         self.healthStore.execute(query)
-        self.healthStore.enableBackgroundDelivery(for: sampleType,
-                                                  frequency: .immediate) {
-                                                    (success, error) in
-                                                    print("Background Delivery completed")
+        self.healthStore.enableBackgroundDelivery(for: sampleType, frequency: .immediate){
+            (success, error) in
+            print("Background Delivery completed")
         }
     }
-    
-    func queryDailyStepCount(completion: @escaping (Double?, Error?) -> Swift.Void) {
-        let sampleType = HKObjectType.quantityType(forIdentifier: .stepCount)!
-
-        let (startDate, endDate) = self.getStartEndDate()
-        let predicate = HKQuery.predicateForSamples(withStart: startDate,
-                                                    end: endDate,
-                                                    options: .strictEndDate)
-        
-        let query = HKStatisticsQuery(quantityType: sampleType,
-                                      quantitySamplePredicate: predicate,
-                                      options: .cumulativeSum) {
-            query, result, error in
-                                        
-            guard result != nil else {
-                print("\(#function): result is \(result)")
-                completion(nil, error)
-                return
-            }
-            
-            let totalStepCount = self.getTotalStepCount(from: result!)
-            
-            completion(totalStepCount, error)
-        }
-        
-        healthStore.execute(query)
-        
-        print("\(#function):\(NSDate()):\(query)")
-    }
-    
-    func getStartEndDate() -> (start: Date, end: Date) {
-        let calendar = Calendar.current
-        let endDate = Date()
-        let startDate = calendar.startOfDay(for: endDate)
-        
-        print("startDate: \(startDate)")
-        print("endDate: \(endDate)")
-        
-        return (startDate, endDate)
-    }
-    
-    func getTotalStepCount(from result: HKStatistics) -> Double{
-        var totalStepCount = 0.0
-        
-        if let quantity = result.sumQuantity() {
-            let unit = HKUnit.count()
-            totalStepCount = quantity.doubleValue(for: unit)
-        }
-        
-        return totalStepCount
-    }
-    
-    
 }
+

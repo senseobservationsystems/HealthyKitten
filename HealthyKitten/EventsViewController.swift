@@ -53,8 +53,6 @@ class EventsViewController: UIViewController {
                                                   applicationActivities: nil)
         self.present(activityVC, animated: true, completion: nil)
     }
-
-
 }
 
 extension EventsViewController: UITableViewDataSource {
@@ -69,21 +67,25 @@ extension EventsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let event = viewModel.events[indexPath.row]
         switch event {
-        case .Sleep(receivedAt: let receivedAt, applicationState: let applicationState, payload: let payload):
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "SleepCell", for: indexPath) as? SleepCell else {
+        case .HKEvent(sampleType: let sampleType,
+                      receivedAt: let receivedAt,
+                      applicationState: let applicationState,
+                      payload: let payload):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "HKEventCell", for: indexPath) as? HKEventCell else {
                 preconditionFailure("Expected a SleepCell")
             }
+            cell.sampleTypeLabel.text = sampleType
             cell.dateLabel.text = DateFormatter.localizedString(from: receivedAt, dateStyle: .medium, timeStyle: .medium)
             cell.applicationStateLabel.text = "Received in app state: \(applicationState)"
             cell.payloadLabel.text = String(describing: payload)
             return cell
-        case .StepCount(receivedAt: let receivedAt, applicationState: let applicationState, payload: let payload):
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "StepCountCell", for: indexPath) as? StepCountCell else {
+        case .AppEvent(receivedAt: let receivedAt,
+                       appEvent: let appEvent):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "AppEventCell", for: indexPath) as? AppEventCell else {
                 preconditionFailure("Expected a StepCountCell")
             }
             cell.dateLabel.text = DateFormatter.localizedString(from: receivedAt, dateStyle: .medium, timeStyle: .medium)
-            cell.applicationStateLabel.text = "Received in app state: \(applicationState)"
-            cell.payloadLabel.text = String(describing: payload)
+            cell.appEventLabel.text = appEvent
             return cell
         }
     }
