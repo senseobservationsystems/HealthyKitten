@@ -36,8 +36,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let tabBarChildViewControllers = tabBarController.viewControllers, tabBarChildViewControllers.count >= 2,
             let eventsTabNavController = tabBarChildViewControllers[0] as? UINavigationController,
             let eventsViewController = eventsTabNavController.viewControllers.first as? EventsViewController
-            //let secondTabNavController = tabBarChildViewControllers[1] as? UINavigationController,
-            //let secondViewController = secondTabNavController.viewControllers.first as? SecondViewController
+            //let queryTabNavController = tabBarChildViewControllers[1] as? UINavigationController,
+            //let queryViewController = queryTabNavController.viewControllers.first as? QueryViewController
         else {
             preconditionFailure("View controllers not found")
         }

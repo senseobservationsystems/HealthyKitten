@@ -1,5 +1,5 @@
 //
-//  SecondViewController.swift
+//  QueryViewController.swift
 //  HealthyKitten
 //
 //  Created by Tatsuya Kaneko on 10/02/17.
