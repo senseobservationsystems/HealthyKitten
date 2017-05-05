@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2720456A1EBA0DEA008284B5 /* FillMemoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 272045681EBA0DEA008284B5 /* FillMemoryViewController.swift */; };
+		2720456B1EBA0DEA008284B5 /* FillMemoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 272045691EBA0DEA008284B5 /* FillMemoryViewModel.swift */; };
 		274C1B481E56085800F73A9F /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 274C1B471E56085800F73A9F /* HealthKitManager.swift */; };
 		276C73181E6989FE000E88FD /* HealthKitManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276C73171E6989FE000E88FD /* HealthKitManagerDelegate.swift */; };
 		276C731A1E69A9D0000E88FD /* QueryHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276C73191E69A9D0000E88FD /* QueryHelper.swift */; };
@@ -36,6 +38,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		272045681EBA0DEA008284B5 /* FillMemoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FillMemoryViewController.swift; sourceTree = "<group>"; };
+		272045691EBA0DEA008284B5 /* FillMemoryViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FillMemoryViewModel.swift; sourceTree = "<group>"; };
 		274C1B471E56085800F73A9F /* HealthKitManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthKitManager.swift; sourceTree = "<group>"; };
 		276C73171E6989FE000E88FD /* HealthKitManagerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthKitManagerDelegate.swift; sourceTree = "<group>"; };
 		276C73191E69A9D0000E88FD /* QueryHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryHelper.swift; sourceTree = "<group>"; };
@@ -108,6 +112,8 @@
 		27A5DE561E4E12BE00B90D97 /* HealthyKitten */ = {
 			isa = PBXGroup;
 			children = (
+				272045681EBA0DEA008284B5 /* FillMemoryViewController.swift */,
+				272045691EBA0DEA008284B5 /* FillMemoryViewModel.swift */,
 				279FD3881E54BF1F00796759 /* HealthyKitten.entitlements */,
 				27A5DE571E4E12BE00B90D97 /* AppDelegate.swift */,
 				276C73191E69A9D0000E88FD /* QueryHelper.swift */,
@@ -253,12 +259,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2720456B1EBA0DEA008284B5 /* FillMemoryViewModel.swift in Sources */,
 				27A5DE5C1E4E12BE00B90D97 /* SecondViewController.swift in Sources */,
 				27A5DE7A1E4E13E000B90D97 /* DataStore.swift in Sources */,
 				27A5DE581E4E12BE00B90D97 /* AppDelegate.swift in Sources */,
 				2782B8DA1E54A69D00F2C527 /* AppEventCell.swift in Sources */,
 				2782B8D51E548C2B00F2C527 /* EventsViewModel.swift in Sources */,
 				27A5DE5A1E4E12BE00B90D97 /* EventsViewController.swift in Sources */,
+				2720456A1EBA0DEA008284B5 /* FillMemoryViewController.swift in Sources */,
 				27A5DE7C1E4E148000B90D97 /* PropertyListSerializable.swift in Sources */,
 				276C73181E6989FE000E88FD /* HealthKitManagerDelegate.swift in Sources */,
 				2782B8D81E54A67400F2C527 /* HKEventCell.swift in Sources */,

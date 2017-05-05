@@ -35,15 +35,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let tabBarController = window?.rootViewController as? UITabBarController,
             let tabBarChildViewControllers = tabBarController.viewControllers, tabBarChildViewControllers.count >= 2,
             let eventsTabNavController = tabBarChildViewControllers[0] as? UINavigationController,
-            let eventsViewController = eventsTabNavController.viewControllers.first as? EventsViewController
-            //let secondTabNavController = tabBarChildViewControllers[1] as? UINavigationController,
-            //let secondViewController = secondTabNavController.viewControllers.first as? SecondViewController
+            let eventsViewController = eventsTabNavController.viewControllers.first as? EventsViewController,
+            let fillMemoryTabNavController = tabBarChildViewControllers[1] as? UINavigationController,
+            let fillMemoryViewController = fillMemoryTabNavController.viewControllers.first as? FillMemoryViewController
         else {
             preconditionFailure("View controllers not found")
         }
         
         // Set models to controller
         eventsViewController.viewModel = EventsViewModel(store: eventsStore)
+        fillMemoryViewController.viewModel = FillMemoryViewModel()
+
 
         // Set up HealthKit background delivery
         healthKitManager.requestAuthorization { success, error in
